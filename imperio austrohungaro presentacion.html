@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imperio Austrohúngaro — Presentación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15110c;          /* negro imperial */
+    --panel:#211a12;        /* panel cálido oscuro */
+    --gold:#c9a227;         /* oro Habsburgo */
+    --gold-soft:#e8d28a;
+    --parchment:#f0e6cf;    /* texto principal */
+    --muted:#b3a583;        /* texto secundario */
+    --red:#b41f30;          /* rojo austríaco, acento mínimo */
+    --line:rgba(201,162,39,.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:var(--ink);color:var(--parchment);font-family:'Archivo',sans-serif;overflow:hidden}
+
+  .slide{
+    position:absolute;inset:0;display:none;flex-direction:column;
+    padding:2.2vh 2.6vw 5.2vh;
+    background:
+      radial-gradient(120% 90% at 50% -10%, rgba(201,162,39,.07), transparent 60%),
+      var(--ink);
+  }
+  .slide.active{display:flex}
+
+  /* ---- Cabecera de slide ---- */
+  .head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    border-bottom:1px solid var(--gold);padding-bottom:.8vh;margin-bottom:1.4vh;
+    position:relative;
+  }
+  .head::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:var(--line)}
+  .eyebrow{font-size:1.05vw;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  h1{font-family:'Cinzel',serif;font-size:2.5vw;font-weight:600;color:var(--gold-soft);letter-spacing:.04em;line-height:1.05}
+  .head .sub{font-size:1vw;color:var(--muted);max-width:34vw;text-align:right;line-height:1.35}
+
+  /* ---- Grillas de contenido ---- */
+  .cols{display:grid;gap:1.4vw;flex:1;min-height:0}
+  .g2{grid-template-columns:1.05fr 1fr}
+  .g3{grid-template-columns:1fr 1fr 1fr}
+
+  .col{display:flex;flex-direction:column;gap:1.1vh;min-height:0}
+  .block{
+    background:var(--panel);border:1px solid rgba(201,162,39,.22);
+    border-top:2px solid var(--gold);
+    padding:1.1vh 1vw;flex:0 1 auto;
+  }
+  .block h2{
+    font-family:'Cinzel',serif;font-size:1.18vw;color:var(--gold-soft);
+    letter-spacing:.06em;margin-bottom:.7vh;
+  }
+  .block h3{font-size:.98vw;color:var(--gold);text-transform:uppercase;letter-spacing:.14em;margin:.7vh 0 .3vh;font-weight:700}
+  p,li{font-size:.96vw;line-height:1.42;color:var(--parchment)}
+  .small p,.small li{font-size:.88vw;line-height:1.38}
+  ul{list-style:none}
+  li{padding-left:1em;position:relative;margin-bottom:.35vh}
+  li::before{content:"▪";color:var(--gold);position:absolute;left:0;font-size:.7em;top:.35em}
+  ol{padding-left:1.4em}
+  ol li{padding-left:.2em}
+  ol li::before{content:none}
+  ol li::marker{color:var(--gold);font-weight:700}
+  b,strong{color:var(--gold-soft);font-weight:700}
+  em{color:var(--muted);font-style:italic}
+
+  /* ---- Línea de tiempo (slide 1) ---- */
+  .timeline{list-style:none;border-left:2px solid var(--gold);margin-left:.4vw;padding-left:1vw}
+  .timeline li{padding-left:.4vw;margin-bottom:1vh}
+  .timeline li::before{
+    content:"";position:absolute;left:calc(-1vw - 6px);top:.45em;width:9px;height:9px;
+    background:var(--ink);border:2px solid var(--gold);transform:rotate(45deg);
+  }
+  .timeline .yr{font-family:'Cinzel',serif;color:var(--gold);font-weight:700;font-size:1vw;margin-right:.4em}
+
+  /* ---- Barras demográficas (slide 2) ---- */
+  .demo{display:flex;flex-direction:column;gap:.42vh}
+  .drow{display:grid;grid-template-columns:9.5vw 1fr 3.2vw;align-items:center;gap:.5vw;font-size:.85vw}
+  .drow .nm{color:var(--parchment)}
+  .bar{height:1.15vh;background:rgba(201,162,39,.12);position:relative}
+  .bar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--gold),var(--gold-soft))}
+  .drow .pc{color:var(--gold);text-align:right;font-weight:600}
+  .stats{display:flex;gap:1vw;margin-bottom:.9vh}
+  .stat{flex:1;border:1px solid var(--line);padding:.7vh .6vw;text-align:center}
+  .stat .n{font-family:'Cinzel',serif;font-size:1.7vw;color:var(--gold-soft);font-weight:700;line-height:1.1}
+  .stat .l{font-size:.72vw;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+
+  /* ---- Pueblos (slide 2) ---- */
+  .peoples{display:grid;grid-template-columns:1fr 1fr;gap:.6vh .8vw}
+  .pp{border-left:2px solid var(--gold);padding-left:.6vw}
+  .pp h4{font-size:.92vw;color:var(--gold-soft);margin-bottom:.2vh}
+  .pp p{font-size:.8vw;line-height:1.32;color:var(--parchment)}
+
+  /* ---- Versus Balcanes ---- */
+  .vs{display:grid;grid-template-columns:1fr auto 1fr;gap:.6vw;align-items:start}
+  .vs .mid{font-family:'Cinzel',serif;color:var(--red);font-weight:700;font-size:1vw;align-self:center}
+  .vs h4{font-size:.9vw;color:var(--gold-soft);margin-bottom:.3vh;text-transform:uppercase;letter-spacing:.08em}
+
+  /* ---- Cronología disolución ---- */
+  .chrono li{display:grid;grid-template-columns:6.4vw 1fr;gap:.5vw;padding-left:0;margin-bottom:.45vh}
+  .chrono li::before{content:none}
+  .chrono .d{font-family:'Cinzel',serif;color:var(--red);font-weight:700;font-size:.86vw}
+
+  /* ---- Tratados ---- */
+  .treaty{display:grid;grid-template-columns:1fr 1fr;gap:.8vw}
+
+  /* ---- Anexos slide 3 ---- */
+  .annex .block{border-top-color:var(--red)}
+  .annex h2{color:var(--parchment)}
+
+  /* ---- Pie / navegación ---- */
+  .foot{
+    position:fixed;left:0;right:0;bottom:0;height:4.2vh;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 2.6vw;border-top:1px solid var(--line);background:var(--ink);z-index:10;
+  }
+  .motto{font-size:.78vw;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+  .nav{display:flex;align-items:center;gap:1vw}
+  .dots{display:flex;gap:.5vw}
+  .dot{width:.55vw;height:.55vw;border:1px solid var(--gold);transform:rotate(45deg);cursor:pointer;background:transparent}
+  .dot.on{background:var(--gold)}
+  .btn{background:none;border:1px solid var(--gold);color:var(--gold);font-family:'Archivo';
+       font-size:.85vw;padding:.3vh .7vw;cursor:pointer;letter-spacing:.1em}
+  .btn:hover,.dot:hover{background:rgba(201,162,39,.25)}
+  .btn:focus-visible,.dot:focus-visible{outline:2px solid var(--gold-soft);outline-offset:2px}
+  .count{font-family:'Cinzel',serif;color:var(--gold);font-size:.95vw}
+
+  @media (prefers-reduced-motion: no-preference){
+    .slide.active{animation:fade .35s ease}
+    @keyframes fade{from{opacity:0}to{opacity:1}}
+  }
+  @media (max-width:900px){
+    html,body{overflow:auto}
+    .slide{position:relative;display:none;padding-bottom:8vh;height:auto;min-height:100vh}
+    .slide.active{display:flex}
+    .cols{display:flex;flex-direction:column}
+    h1{font-size:6vw}.eyebrow{font-size:2.6vw}.head .sub{display:none}
+    p,li{font-size:3.4vw}.small p,.small li{font-size:3.1vw}
+    .block h2{font-size:4vw}.block h3{font-size:3.2vw}
+    .timeline .yr{font-size:3.4vw}
+    .drow{grid-template-columns:26vw 1fr 9vw;font-size:3vw}
+    .stat .n{font-size:5.5vw}.stat .l{font-size:2.2vw}
+    .peoples{grid-template-columns:1fr}
+    .pp h4{font-size:3.4vw}.pp p{font-size:3vw}
+    .vs h4,.vs .mid{font-size:3.2vw}
+    .chrono li{grid-template-columns:20vw 1fr}.chrono .d{font-size:3vw}
+    .motto{display:none}.btn{font-size:3vw;padding:1vw 2.5vw}.count{font-size:3.4vw}
+    .dot{width:2.2vw;height:2.2vw}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ DIAPOSITIVA 1 ============ -->
+<section class="slide active" id="s1">
+  <div class="head">
+    <div>
+      <div class="eyebrow">I · Origen y estructura · 1273 – 1867</div>
+      <h1>De los Habsburgo a la Monarquía Dual</h1>
+    </div>
+    <div class="sub">Seis siglos de expansión dinástica culminan en el <b>Ausgleich</b> de 1867: dos Estados, dos parlamentos, una sola corona.</div>
+  </div>
+
+  <div class="cols g2">
+    <!-- Columna izquierda: camino al imperio -->
+    <div class="col">
+      <div class="block" style="flex:1">
+        <h2>El camino al Imperio</h2>
+        <ul class="timeline small">
+          <li><span class="yr">800</span>Carlomagno es coronado emperador por el papa León III. La región más oriental de su reino se llama <em>Ostarrichi</em>, la «marca oriental».</li>
+          <li><span class="yr">s. X–1250</span>Los <b>Babenberg</b> gobiernan casi tres siglos desde Viena. Su extinción abre un período de inestabilidad política.</li>
+          <li><span class="yr">1273</span><b>Rodolfo I de Habsburgo</b> asciende al trono. Mediante alianzas políticas, la dinastía gana territorios e influencia.</li>
+          <li><span class="yr">s. XV</span>Los Habsburgo reciben el título de <b>emperadores del Sacro Imperio Romano Germánico</b> y gobernarán Austria más de 600 años.</li>
+          <li><span class="yr">s. XV–XVI</span>Expansión por <b>matrimonios estratégicos</b>, no solo por guerra: <em>«Bella gerant alii, tu felix Austria nube»</em>. Así heredan Bohemia, Hungría, Moravia, Eslovaquia y Croacia. En el s. XVI controlan desde España hasta Europa Central: múltiples naciones, culturas e idiomas.</li>
+          <li><span class="yr">1804</span>Ante la disolución del Sacro Imperio por las guerras napoleónicas, <b>Francisco I proclama el Imperio Austríaco</b> (Austria, Bohemia, Moravia, Galicia, Rumania occidental, Croacia, Eslovenia, Hungría y partes de Italia).</li>
+          <li><span class="yr">s. XIX</span>Problema creciente: el <b>nacionalismo</b>. Húngaros, checos, polacos y rutenos exigen independencia o autonomía. Tras sofocar la revolución, Francisco José I comprende que la represión no es solución a largo plazo.</li>
+          <li><span class="yr">1866–67</span>Derrota ante Prusia en la <b>Guerra de las Siete Semanas</b>. Francisco José negocia el <b>Ausgleich</b> (Compromiso) con los líderes húngaros.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Columna derecha: estructura dual -->
+    <div class="col small">
+      <div class="block">
+        <h2>La Monarquía Dual (1867)</h2>
+        <p>Dos Estados separados bajo una corona común: cada uno con su <b>parlamento, gobierno, leyes y presupuesto</b>. El único vínculo: el mismo hombre era <b>Emperador de Austria y Rey de Hungría</b> — dos títulos formalmente separados.</p>
+      </div>
+      <div class="block">
+        <h3>Imperio Austríaco (occidente) · capital Viena</h3>
+        <p><b>Incluía:</b> Austria (corazón germánico) · Bohemia y Moravia (tierras checas, industria) · Galicia (polaca, agrícola y pobre) · Eslovenia · Croacia-Eslavonia (parcial).</p>
+        <p><b>Reichsrat:</b> 436 diputados; voto restringido (sufragio masculino universal recién en <b>1907</b>). La <b>fragmentación nacionalista</b> (checos, polacos, italianos en bloques) hacía agotadora cada ley: a menudo se disolvía y el emperador <b>gobernaba por decreto</b>.</p>
+      </div>
+      <div class="block">
+        <h3>Reino de Hungría (oriente) · Budapest</h3>
+        <p><b>Incluía:</b> Hungría · Croacia-Eslavonia (cierta autonomía) · Transilvania (rica en recursos, mayoría rumana) · Eslovaquia · Rutenia (ucranianos).</p>
+        <p><b>Dieta:</b> más homogénea (mayoría húngara), pero con minorías marginadas. Política de <b>«magiarización» agresiva</b>: húngaro impuesto en escuelas, administración y tribunales → resentimiento profundo de rutenos, croatas y rumanos.</p>
+      </div>
+      <div class="block">
+        <h3>Tres ministerios comunes — fricción constante</h3>
+        <ul>
+          <li><b>Exteriores:</b> bajo control austríaco; Hungría se quejaba de no tener voz.</li>
+          <li><b>Defensa:</b> ejército «unido» pero con regimientos húngaros separados; comando en alemán y húngaro mezclados → <b>caos logístico</b> en guerra.</li>
+          <li><b>Hacienda común:</b> reparto del presupuesto renegociado entre crisis amargas; Hungría sentía que pagaba demasiado y recibía poco.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIAPOSITIVA 2 ============ -->
+<section class="slide" id="s2">
+  <div class="head">
+    <div>
+      <div class="eyebrow">II · Pueblos y política exterior · 1867 – 1913</div>
+      <h1>Un imperio de doce lenguas</h1>
+    </div>
+    <div class="sub">La diversidad fue su mayor <b>fortaleza</b> en el s. XIX (comercio e intercambio cultural) y su mayor <b>debilidad política</b>.</div>
+  </div>
+
+  <div class="cols g3">
+    <!-- Demografía -->
+    <div class="col">
+      <div class="block" style="flex:1">
+        <h2>Demografía en 1914</h2>
+        <div class="stats">
+          <div class="stat"><div class="n">53 M</div><div class="l">habitantes</div></div>
+          <div class="stat"><div class="n">12</div><div class="l">idiomas principales</div></div>
+          <div class="stat"><div class="n">4</div><div class="l">religiones</div></div>
+        </div>
+        <p style="font-size:.82vw;color:var(--muted);margin-bottom:.8vh">Catolicismo romano · ortodoxia · protestantismo · judaísmo</p>
+        <div class="demo">
+          <div class="drow"><span class="nm">Austriacos (alemanes)</span><div class="bar"><i style="width:38%"></i></div><span class="pc">38%</span></div>
+          <div class="drow"><span class="nm">Húngaros</span><div class="bar"><i style="width:20%"></i></div><span class="pc">20%</span></div>
+          <div class="drow"><span class="nm">Checos y moravos</span><div class="bar"><i style="width:13%"></i></div><span class="pc">13%</span></div>
+          <div class="drow"><span class="nm">Polacos</span><div class="bar"><i style="width:10%"></i></div><span class="pc">10%</span></div>
+          <div class="drow"><span class="nm">Rutenos / ucranianos</span><div class="bar"><i style="width:8%"></i></div><span class="pc">8%</span></div>
+          <div class="drow"><span class="nm">Rumanos</span><div class="bar"><i style="width:5%"></i></div><span class="pc">5%</span></div>
+          <div class="drow"><span class="nm">Croatas</span><div class="bar"><i style="width:4%"></i></div><span class="pc">4%</span></div>
+          <div class="drow"><span class="nm">Serbios</span><div class="bar"><i style="width:3%"></i></div><span class="pc">3%</span></div>
+          <div class="drow"><span class="nm">Eslovenos</span><div class="bar"><i style="width:3%"></i></div><span class="pc">3%</span></div>
+          <div class="drow"><span class="nm">Italianos</span><div class="bar"><i style="width:1%"></i></div><span class="pc">1%</span></div>
+          <div class="drow"><span class="nm">Otros</span><div class="bar"><i style="width:3%"></i></div><span class="pc">3%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pueblos -->
+    <div class="col">
+      <div class="block" style="flex:1">
+        <h2>Los pueblos del Imperio</h2>
+        <div class="peoples">
+          <div class="pp"><h4>Austriacos · núcleo germánico</h4><p>Élite gobernante: administración, educación superior, alto clero y ejército en alemán. Pero su <b>nacionalismo era débil</b>: se veían «imperiales», no austriacos — clave tras 1918, cuando Austria quedó reducida a 6 millones.</p></div>
+          <div class="pp"><h4>Húngaros · la nobleza rival</h4><p>Reino propio desde el s. X; élite de grandes terratenientes. Pese a la igualdad teórica de 1867, se sentían ciudadanos de segunda: creían que <b>Viena seguía dominando</b>.</p></div>
+          <div class="pp"><h4>Checos · burguesía industrial</h4><p>Bohemia industrializada: fábricas, ferrocarriles, minas. Empresarios ricos y educados, pero gobernados desde Viena. <b>Conflicto lingüístico diario</b>: exigían escuelas, tribunales y administración en checo.</p></div>
+          <div class="pp"><h4>Polacos y rutenos · oprimidos</h4><p>Polacos de Galicia: campesinos conectados con la Polonia dividida; independentismo creciente. Rutenos: <b>los más oprimidos</b>, campesinos analfabetos con lengua poco reconocida.</p></div>
+          <div class="pp"><h4>Rumanos · pueblo dividido</h4><p>~800.000 en Transilvania: <b>mayoría gobernada por minoría húngara</b>. Querían unirse a Rumania → factor de la alianza rumana con la Entente en 1916.</p></div>
+          <div class="pp"><h4>Serbios y croatas · el Balcán</h4><p>Serbios ortodoxos, más conectados con Serbia que con el imperio; croatas católicos con identidad dual. De aquí saldría <b>Gavrilo Princip</b>, asesino del heredero al trono.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Política exterior -->
+    <div class="col small">
+      <div class="block">
+        <h3>Triple Alianza · 1882</h3>
+        <p>Con <b>Alemania e Italia</b>: ayuda mutua si Francia o Rusia atacaban. Alemania = protección contra Rusia; Italia, una aliada poco natural (rival en el Mediterráneo) pero <em>«mejor aliada que enemiga»</em>.</p>
+      </div>
+      <div class="block">
+        <h3>La cuestión balcánica</h3>
+        <p style="margin-bottom:.5vh">La obsesión exterior: ¿quién controlaría los Balcanes al colapsar el Imperio Otomano?</p>
+        <div class="vs">
+          <div><h4>Austria-Hungría</h4><ul><li>Acceso al Mediterráneo</li><li>Rutas comerciales</li><li>Frenar a Rusia</li><li>Asegurar Bosnia y Croacia</li></ul></div>
+          <div class="mid">VS</div>
+          <div><h4>Rusia</h4><ul><li>Puerto cálido</li><li>Frontera sur segura</li><li>Liderazgo ortodoxo</li><li>Poder mundial</li></ul></div>
+        </div>
+        <p style="margin-top:.5vh"><b>Los serbios</b>, la complicación: ortodoxos como Rusia, que prometía ayudarlos si se rebelaban. Austria-Hungría reprimía sus nacionalismos para que no se unieran a Serbia.</p>
+      </div>
+      <div class="block">
+        <h3>Anexión de Bosnia · 1908</h3>
+        <p>Ocupada desde 1878, anexada legalmente en 1908: un <b>acto de imperialismo tardío</b>. Crisis que casi provoca guerra con Rusia (1908-09); Rusia, débil tras perder ante Japón (1904), no actuó — pero su <b>resentimiento se acumulaba</b>.</p>
+      </div>
+      <div class="block">
+        <h3>Guerras Balcánicas · 1912-13</h3>
+        <p>Bulgaria, Serbia, Grecia y Rumania se disputan el territorio otomano. <b>Serbia emerge como potencia regional</b> — imán para serbios y croatas del imperio. Bulgaria (apoyada por Viena) pierde. Para 1914 el imperio <b>decaía</b>: solo Alemania evitaba su colapso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIAPOSITIVA 3 ============ -->
+<section class="slide" id="s3">
+  <div class="head">
+    <div>
+      <div class="eyebrow">III · Guerra, disolución y legado · 1914 – 2003</div>
+      <h1>El derrumbe de un mundo</h1>
+    </div>
+    <div class="sub">Un atentado en Sarajevo encadena la Gran Guerra; de 676.000 km² imperiales surgen ocho Estados nuevos.</div>
+  </div>
+
+  <div class="cols g3 small">
+    <!-- Estallido -->
+    <div class="col">
+      <div class="block">
+        <h3>Sarajevo · 28 de junio de 1914</h3>
+        <p>El archiduque <b>Francisco Fernando</b>, heredero al trono, es asesinado por <b>Gavrilo Princip</b>, nacionalista serbio-bosnio de la <b>Mano Negra</b>. Su cálculo: una represalia austríaca tan severa que facilitara la rebelión. Acertó — con consecuencias mucho mayores.</p>
+      </div>
+      <div class="block">
+        <h3>Reacción en cadena</h3>
+        <p style="margin-bottom:.4vh"><b>23/7:</b> ultimátum con demandas imposibles a Serbia (investigadores austríacos en su territorio, disolver organizaciones nacionalistas). <b>28/7: declaración de guerra.</b></p>
+        <ol>
+          <li><b>Rusia</b> moviliza para proteger a Serbia</li>
+          <li><b>Alemania</b> moviliza y decide atacar primero</li>
+          <li><b>Francia</b> entra por su alianza con Rusia</li>
+          <li><b>Gran Bretaña</b> entra al invadir Alemania a Bélgica</li>
+          <li><b>Italia</b> se declara neutral, traicionando la alianza</li>
+        </ol>
+        <p style="margin-top:.4vh">Un conflicto austro-serbio se convierte en la <b>Primera Guerra Mundial</b>.</p>
+      </div>
+      <div class="block">
+        <h3>La guerra · tres frentes</h3>
+        <ul>
+          <li><b>Oriental:</b> derrotas repetidas; Rusia invade Galicia, solo Alemania evita el colapso.</li>
+          <li><b>Italiano (1915):</b> Italia, ya aliada de la Entente, invade Eslovenia y Trieste.</li>
+          <li><b>Balcánico:</b> Serbia, conquistada en 1915, resiste con apoyo ruso y británico.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Colapso y disolución -->
+    <div class="col">
+      <div class="block">
+        <h3>Colapso interno</h3>
+        <p>Economía de guerra devastadora, <b>hambre generalizada en 1917-18</b>, racionamiento severo. La estructura dual se rompe: Austria y Hungría buscan paces separadas. En <b>1916 muere Francisco José I</b> tras 68 años de reinado; su sucesor <b>Carlos I</b> intenta reformas — demasiado tarde. En 1918: derrota militar, revolución interna, revueltas nacionalistas y hambre.</p>
+      </div>
+      <div class="block">
+        <h3>Cronología de la disolución · 1918</h3>
+        <ul class="chrono">
+          <li><span class="d">28 oct</span><span>Checoslovaquia declara la independencia</span></li>
+          <li><span class="d">29 oct</span><span>Yugoslavia (Croacia, Eslovenia, Bosnia) se independiza</span></li>
+          <li><span class="d">31 oct</span><span>Hungría se separa de Austria</span></li>
+          <li><span class="d">3 nov</span><span>Austria-Hungría firma el armisticio</span></li>
+          <li><span class="d">11 nov</span><span>Termina la Primera Guerra Mundial</span></li>
+        </ul>
+      </div>
+      <div class="block">
+        <h3>Los tratados</h3>
+        <div class="treaty">
+          <div><h4 style="color:var(--gold-soft);font-size:.9vw;margin-bottom:.3vh">Saint-Germain (1919)</h4>
+            <ul><li>Austria: 84.000 km² (<b>−75%</b> de territorio)</li><li>Prohibida la unión con Alemania</li><li>Sin capacidad militar</li><li>Indemnizaciones</li></ul></div>
+          <div><h4 style="color:var(--gold-soft);font-size:.9vw;margin-bottom:.3vh">Trianon (1920)</h4>
+            <ul><li>Hungría pierde <b>67%</b>: de 283.000 a 93.000 km²</li><li>Transilvania → Rumania</li><li>Eslovaquia y Rutenia → Checoslovaquia</li><li>Croacia y Eslovenia → Yugoslavia</li></ul></div>
+        </div>
+        <p style="margin-top:.5vh">Del imperio de <b>676.000 km²</b> surgen: Austria, Hungría, Checoslovaquia, el Reino de Serbios, Croatas y Eslovenos, Rumania y Italia ampliadas, Polonia restaurada y parte de Ucrania.</p>
+      </div>
+    </div>
+
+    <!-- Legado + anexos -->
+    <div class="col annex">
+      <div class="block" style="border-top-color:var(--gold)">
+        <h3>Legado</h3>
+        <p><b>Fronteras problemáticas</b> que originan conflictos posteriores. Hungría, humillada por Trianon, alimenta un <b>revanchismo</b> que la aliará con la Alemania nazi en los años 30. Los nuevos Estados nacen con minorías internas conflictivas. Los judíos centroeuropeos, antes relativamente protegidos, enfrentan un antisemitismo creciente que contribuirá al Holocausto. Persiste una <b>nostalgia</b>: el imperio como «la mejor opción disponible» para una región multiétnica — aunque se disolvió por razones válidas.</p>
+      </div>
+      <div class="block">
+        <h2 style="font-size:1.05vw">Anexo · Yugoslavia (1918–2003)</h2>
+        <p><b>1918:</b> Reino de Serbios, Croatas y Eslovenos — pueblos eslavos del sur antes bajo distintos imperios. <b>1929:</b> el rey Alejandro I instaura una dictadura y lo renombra Reino de Yugoslavia. Ocupación nazi hasta 1944. <b>2ª Yugoslavia:</b> república socialista del mariscal Tito. <b>1991:</b> Eslovenia y Croacia se independizan → <b>Guerras Yugoslavas</b> (independencia también de Macedonia y Bosnia). Serbia y Montenegro forman la 3ª Yugoslavia (1992), disuelta en <b>2003</b>.</p>
+      </div>
+      <div class="block">
+        <h2 style="font-size:1.05vw">Anexo · Genocidio Armenio (1915)</h2>
+        <p>Los <b>Jóvenes Turcos</b> (en el poder desde el golpe de 1908 contra Abdul Hamid II, el «Sultán Rojo» de las masacres hamidianas) se alían con Alemania y Austria-Hungría en la guerra. Tras la derrota de Sarıkamış culpan de «traición» a los armenios. La <b>directiva 8682</b> desarma a los soldados armenios, luego asesinados sistemáticamente. El <b>24 de abril de 1915</b>, unos 250 intelectuales y líderes armenios son arrestados y ejecutados en Ankara: primeras víctimas del genocidio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NAVEGACIÓN ============ -->
+<footer class="foot">
+  <span class="motto">Indivisibiliter ac Inseparabiliter · Imperio Austrohúngaro 1867–1918</span>
+  <div class="nav">
+    <button class="btn" id="prev" aria-label="Anterior">◀</button>
+    <div class="dots" id="dots"></div>
+    <span class="count" id="count">1 / 3</span>
+    <button class="btn" id="next" aria-label="Siguiente">▶</button>
+  </div>
+</footer>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let cur=0;
+  const dotsBox=document.getElementById('dots');
+  slides.forEach((_,i)=>{
+    const d=document.createElement('button');
+    d.className='dot'+(i===0?' on':'');
+    d.setAttribute('aria-label','Diapositiva '+(i+1));
+    d.onclick=()=>go(i);
+    dotsBox.appendChild(d);
+  });
+  const dots=[...dotsBox.children];
+  function go(i){
+    cur=(i+slides.length)%slides.length;
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    dots.forEach((d,k)=>d.classList.toggle('on',k===cur));
+    document.getElementById('count').textContent=(cur+1)+' / '+slides.length;
+  }
+  document.getElementById('prev').onclick=()=>go(cur-1);
+  document.getElementById('next').onclick=()=>go(cur+1);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown') go(cur+1);
+    if(e.key==='ArrowLeft'||e.key==='PageUp') go(cur-1);
+  });
+</script>
+</body>
+</html>
